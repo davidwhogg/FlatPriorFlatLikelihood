@@ -4,6 +4,8 @@
 % to-dos and questions
 % --------------------
 % - should I generalize to more than one important parameter? Or just discuss it at the end?
+% - I am using first-person singular everywhere. Okay?
+% - Should I be more careful about using LF and Likelihood consistently? Audit.
 
 \documentclass[10pt]{article}
 \usepackage[letterpaper]{geometry}
@@ -24,6 +26,7 @@
 
 % text macros
 \newcommand{\foreign}[1]{\textsl{#1}}
+\newcommand{\figref}[1]{\figurename~\ref{#1}}
 
 % hogg math issues
 \newcommand{\given}{\,|\,}
@@ -44,8 +47,8 @@ It has no peak in any of the $p$ parameters on which it depends, although it is 
 The data are compatible with any value of any individual parameter; the profile likelihood is flat for every one of the $p$ parameters.
 I present a prior that is also flat:
 It is the outer product of $p$ uniform distributions.
-When this likelihood function is multiplied by this prior, every marginal posterior and every marginal likelihood, for every one of the $p$ parameters (and indeed almost all linear combinations of the $p$ parameters), is peaked.
-Fundamentally the problem is that the edges of the uniform prior aren't aligned with the degeneracy surface in the likelihood, so the effective volume of the prior is very different in regions of identical likelihood value.
+When this likelihood function is multiplied by this prior, every marginal posterior and every marginal likelihood, for every one of the $p$ parameters (and indeed almost all linear combinations of the $p$ parameters), is peaked, and usually not at or near an edge of the prior range.
+Fundamentally the problem is that the shape of the uniform prior isn't aligned with the degeneracy surface in the likelihood, so the effective volume of the prior is very different in regions of identical likelihood value.
 This example shows that a posterior peak doesn't indicate a successful measurement, and that flat priors are in fact informative, especially under marginalization and especially when the number of parameters is large (like $>3$).
 Simple prior-dependence tests can diagnose these issues.
 
@@ -99,13 +102,17 @@ This is what our computer program computes for us.
 It turns out (but this is not transparent to us) that, when evaluated at the observed data $Y$, the LF depends only on certain linear combinations of the parameters $\theta$.
 That is, there is a rectangular $q\times p$ matrix $A$, with $q<p$, such that, to some very good approximation,
 \begin{align}
-    \ln p(Y\given\theta,\mathscr{I}) &= K - \frac{1}{2}\,\norm{A\cdot\theta - a}^2 ~,
+    \ln p(Y\given\theta,\mathscr{I}) &= K - \frac{1}{2}\,\norm{A\cdot\theta - a}^2 ~,\label{eq:LF}
 \end{align}
 where $K$ is a scalar constant, $a$ is a $q$-vector constant, and the norm is the standard euclidean norm (square root of sum of squares).
 Presumably the story would be different for different data, because $K, A, a, q$, and even the linearity might all depend strongly on $Y$.
 But $Y$ is the data we have.
+Note that here and everywhere, vectors like $\theta$ and $a$ are column vectors.
 
-Now the question is: \emph{Is the parameter of importance constrained by these data?}
+Just to be clear, the LF \eqref{eq:LF} is Gaussian-shaped in $q$ directions in the parameter space, and completely degenerate or uniform in all orthogonal directions.
+It can be seen as being a finite-width hypersurface that is $p-q$ dimensional in its large (infinite) dimensions, and has a finite Gaussian thickness in the remaining $q$ dimensions.
+
+Now the question is, given this LF: \emph{Is the parameter of importance constrained by these data?}
 Since we all agree on the likelihood principle, that is, that the likelihood function is sufficient with respect to the data,
 the answer to this question is somehow tied up with the properties of the $A$ matrix.
 The $A$ matrix can be thought of as projecting the parameter space into a $q$-dimensional linear subspace of the full $p$-dimensional parameter space (and then applying some affine transformation)
@@ -136,26 +143,26 @@ In this case, when $q<p$, there is no such point.
 Instead there is a $(p-q)$-dimensional parameter subspace that is all tied for maximum likelihood.
 Thus there is no maximum-likelihood estimator for this problem.
 \item
-The profile likelihood for the important parameter $\theta_1$ is the maximum possible likelihood value for each setting of parameter $\theta_1$, optimizing over all the nuisance parameters $\theta_i$ ($i>1$).
+The \emph{profile likelihood} for the important parameter $\theta_1$ is the maximum possible likelihood value for each setting of parameter $\theta_1$, optimizing over all the nuisance parameters $\theta_i$ ($i>1$).
 In our simple setup, when $q<p$ and $A$ is generic, this will be exactly $K$ for any value of $\theta_i$.
 That is, in this problem, the profile likelihood is flat with respect to $\theta_1$ (or indeed any parameter $\theta_i$).
 The profile likelihood is a prior-free (and hence frequentist-safe) way of eliminating nuisance parameters.
 \item
-The posterior pdf $p(\theta\given Y,\mathscr{I})$ is the product of the prior pdf and the likelihood, renormalized
+The \emph{posterior pdf} $p(\theta\given Y,\mathscr{I})$ is the product of the prior pdf and the likelihood, renormalized
 \begin{align}
     p(\theta\given Y,\mathscr{I}) &= \frac{1}{Z}\,p(Y\given\theta,\mathscr{I})\,p(\theta\given\mathscr{I}) ~,
 \end{align}
 where $Z$ is a normalization constant (sometimes called ``the evidence'').
 Because, in this problem, the likelihood is flat (in some $q$-dimensional linear subspace) and the prior is flat, the posterior will also be flat (in that same $q$-dimensional linear subspace).
 \item
-The marginal posterior pdf is the posterior pdf for the important parameter $\theta_1$, found by integrating the full posterior pdf over all the the nuisance parameters $\theta_i$ ($i>1$).
+The \emph{marginal posterior pdf} is the posterior pdf for the important parameter $\theta_1$, found by integrating the full posterior pdf over all the the nuisance parameters $\theta_i$ ($i>1$).
 \begin{align}
     p(\theta_1\given Y,\mathscr{I}) &= \int_{a_2}^{b_2}\int_{a_3}^{b_3}\cdots\int_{a_p}^{b_p} p(\theta\given Y,\mathscr{I})\,\dd\theta_2\,\dd\theta_3\cdots\dd\theta_p ~.
 \end{align}
 In my world, this integration is usually done by Monte Carlo, or even Markov chain Monte Carlo (CITE THINGS), so it is done approximately.
 That is how we will proceed below (even though in this simple setup, the integrals can probably be written explicitly in terms of erfs).
 \item
-The marginal likelihood is very similar to the marginal posterior pdf, but we don't put any prior on the important parameter; we only put the priors on the nuisance parameters.
+The \emph{marginal likelihood} is very similar to the marginal posterior pdf, but we don't put any prior on the important parameter; we only put the priors on the nuisance parameters.
 Since, in the problem considered here, the prior on $\theta_1$ is both flat and separable from the priors on the nuisance parameters, the marginal likelihood is identical in shape to the marginal posterior pdf, so we will only consider the marginal posterior pdf in what follows.
 \end{itemize}
 
@@ -164,6 +171,20 @@ We will then set prior bounds for each of the parameters $\theta_i$ and compute 
 Without loss of generality, we can set the scalar constant $K=0$ always, because only likelihood ratios---only differences in log likelihood---matter to the inferences.
 
 \section{Experiments and results}
+\paragraph{Experiment 1:}
+In Experiment~1, I choose $p=6$ and $q=2$ to demonstrate the basic properties of the problem.
+I set the $q\times p$ matrix $A$ to be a pair of randomly generated orthogonal unit $p$-vectors.
+These are made by generating $q$ vectors randomly from an isotropic multivariate normal, and then running Gram--Schmidt orthonormalization.
+The vector $a$ is chosen randomly (and is truly arbitrary).
+Because the vectors in $A$ are normalized, the width of the degenerate likelihood surface is unity in the sense of a Gaussian standard deviation.
+
+Importantly, in this Experiment, I choose the prior limits $a_i, b_i$ (for all $1\leq i\leq p$) such that some region of high likelihood passes near (but not exactly at) the center of the prior hyper-box.
+For each of $M=12$ trials, I draw $N=2^15$ samples iid from the prior, and use them to compute an estimate of the marginal posterior pdf for each of the parameters $\theta_i$ ($1\leq i\leq p$).
+That provides $M=12$ (noisy) estimates of the marginal posterior pdf for each of the $p=6$ parameters.
+
+These estimates of the marginal posterior pdfs are shown in \figref{fig:Experiment1}.
+Several of the panels of this \figurename{} show clear peaks in the posterior pdf, even though \emph{neither the LF nor the prior pdf are peaked in any parameter}.
+\figref{fig:Experiment1} is the key plot; it delivers the fundamental punchline of this investigation.
 
 \section{Discussion}
 
@@ -176,6 +197,10 @@ HOGG: Explain why you want to do profile likelihood, in general.
 HOGG: Explain why you can't do profile likelihood, in general.
 
 HOGG: Say that this project may seem artificial, but it looks a lot like Villaescusa et al.
+
+HOGG: Did anything depend on there being only one important parameter? No! Demonstrate.
+
+HOGG: It is important to show that claims about the data can be justified in terms of the likelihood.
 
 \paragraph{Acknowlegements:}
 It is a pleasure to thank
