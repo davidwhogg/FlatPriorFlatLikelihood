@@ -179,7 +179,7 @@ The vector $a$ is chosen randomly (and is truly arbitrary).
 Because the vectors in $A$ are normalized, the width of the degenerate likelihood surface is unity in the sense of a Gaussian standard deviation.
 
 Importantly, in this Experiment, I choose the prior limits $a_i, b_i$ (for all $1\leq i\leq p$) such that some region of high likelihood passes near (but not exactly at) the center of the prior hyper-box.
-For each of $M=12$ trials, I draw $N=2^15$ samples iid from the prior, and use them to compute an estimate of the marginal posterior pdf for each of the parameters $\theta_i$ ($1\leq i\leq p$).
+For each of $M=12$ trials, I draw $N=2^{15}$ samples iid from the prior, and use them to compute an estimate of the marginal posterior pdf for each of the parameters $\theta_i$ ($1\leq i\leq p$).
 That provides $M=12$ (noisy) estimates of the marginal posterior pdf for each of the $p=6$ parameters.
 
 These estimates of the marginal posterior pdfs are shown in \figref{fig:Experiment1}.
@@ -187,7 +187,8 @@ Several of the panels of this \figurename{} show clear peaks in the posterior pd
 \figref{fig:Experiment1} is the key plot; it delivers the fundamental punchline of this investigation.
 \begin{figure}[t!]
 \includegraphics[width=\textwidth]{./notebooks/Experiment1.png}
-\caption{Estimates of the marginal posterior pdfs for all parameters $\theta_i$ ($1\leq i\leq 6$). Each panel shows 12 estimates (grey lines) of the marginalized posterior pdf for one of the parameters, and the average of the 12 estimates (black line). Each of the 12 estimates was obtained my a Monte Carlo sampling with $N=2^15$ samples drawn iid from the prior pdf. Each panel $i$ has limits $a_i, b_i$ corresponding to the limits on the prior for parameter $\theta_i$.\label{fig:Experiment1}}
+\caption{Estimates of the marginal posterior pdfs for all parameters $\theta_i$ ($1\leq i\leq 6$). Each panel shows 12 estimates (grey lines) of the marginalized posterior pdf for one of the parameters, and the average of the 12 estimates (black line). Each of the 12 estimates was obtained my a Monte Carlo sampling with $N=2^{15}$ samples drawn iid from the prior pdf. Each panel $i$ has limits $a_i, b_i$ corresponding to the limits on the prior for parameter $\theta_i$.\label{fig:Experiment1}}
+\rule{\textwidth}{0.1pt}
 \end{figure}
 
 \section{Discussion}
