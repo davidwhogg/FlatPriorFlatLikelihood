@@ -172,11 +172,19 @@ Without loss of generality, we can set the scalar constant $K=0$ always, because
 
 \section{Experiments and results}
 \paragraph{Experiment 1:}
-In Experiment~1, I choose $p=6$ and $q=2$ to demonstrate the basic properties of the problem.
+In Experiment~1, I choose $p=6$ and $q=4$ to demonstrate the basic properties of the problem.
 I set the $q\times p$ matrix $A$ to be a pair of randomly generated orthogonal unit $p$-vectors.
 These are made by generating $q$ vectors randomly from an isotropic multivariate normal, and then running Gram--Schmidt orthonormalization.
 The vector $a$ is chosen randomly (and is truly arbitrary).
 Because the vectors in $A$ are normalized, the width of the degenerate likelihood surface is unity in the sense of a Gaussian standard deviation.
+In detail, the randomly-generated rectangular matrix $A$ in this Experiment is
+\begin{align}
+    A = \begin{bmatrix}
+  -0.441 &-0.595 &-0.123 & 0.458 & 0.321 & 0.351 \\
+  -0.146 & 0.106 & 0.819 &-0.184 & 0.509 & 0.058 \\
+  -0.662 & 0.499 & 0.151 & 0.289 &-0.444 & 0.096 \\
+   0.566 & 0.237 & 0.208 & 0.730 & 0.017 & 0.217\end{bmatrix}
+\end{align}
 
 Importantly, in this Experiment, I choose the prior limits $a_i, b_i$ (for all $1\leq i\leq p$) such that some region of high likelihood passes near (but not exactly at) the center of the prior hyper-box.
 For each of $M=12$ trials, I draw $N=2^{15}$ samples iid from the prior, and use them to compute an estimate of the marginal posterior pdf for each of the parameters $\theta_i$ ($1\leq i\leq p$).
